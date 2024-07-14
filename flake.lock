@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "commslib-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1719105049,
+        "narHash": "sha256-4glwNEZ5x9S5LcgNw7AwVImUg9eVG+FCVUB9158P22w=",
+        "owner": "commschamp",
+        "repo": "comms",
+        "rev": "5b1cd4ccde1d2e5ff051926d01db4bfac89fd417",
+        "type": "github"
+      },
+      "original": {
+        "owner": "commschamp",
+        "repo": "comms",
+        "type": "github"
+      }
+    },
     "devshell": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -145,17 +161,18 @@
     "nebs-packages": {
       "inputs": {
         "commsdsl-src": "commsdsl-src",
+        "commslib-src": "commslib-src",
         "devshell": "devshell_2",
         "flake-parts": "flake-parts_2",
         "flow-ipc-src": "flow-ipc-src",
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1720565251,
-        "narHash": "sha256-Ikn+cAyVLR9Ey8HS3+/+yBqhxWEeZGB9z3Wl6a+krg0=",
+        "lastModified": 1720569797,
+        "narHash": "sha256-y5PNLxrIG0hVo9b3zUchrOqWORzDwIrajsN66YWDSzE=",
         "owner": "RCMast3r",
         "repo": "nebs_packages",
-        "rev": "0c9b07713f936926894ef9e103d3bf0de2daba2d",
+        "rev": "2149319ce0e26f0654d14244c36ef9bbec0d82e4",
         "type": "github"
       },
       "original": {
@@ -238,11 +255,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1720386169,
-        "narHash": "sha256-NGKVY4PjzwAa4upkGtAMz1npHGoRzWotlSnVlqI40mo=",
+        "lastModified": 1720691131,
+        "narHash": "sha256-CWT+KN8aTPyMIx8P303gsVxUnkinIz0a/Cmasz1jyIM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "194846768975b7ad2c4988bdb82572c00222c0d7",
+        "rev": "a046c1202e11b62cbede5385ba64908feb7bfac4",
         "type": "github"
       },
       "original": {

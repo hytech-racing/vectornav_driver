@@ -3,7 +3,7 @@ stdenv.mkDerivation {
   pname = "vn_lib_gen";
   version = "0.0.1";
   src = ./dsl;
-  buildInputs = [ commsdsl ];
+  propagatedBuildInputs = [ commsdsl ];
   buildPhase = ''
     ${commsdsl}/bin/commsdsl2comms schema.xml
   '';

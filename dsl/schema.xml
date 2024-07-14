@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema name="vectornav" endian="big">
+
+<!-- im going to make a single packet that has two 8 bit integers in it and a 15 character string -->
+<schema name="vectornav" endian="little">
+
     <fields>
-        <enum name="MsgId" type="uint8" semanticType="messageId">
-            <validValue name="M1" val="1" />
-            <validValue name="M2" val="2" />
+        <int name="vn_int1" type="int8"/>
+        <int name="vn_int2" type="int8"/>
+        <string name="asdf" length="15"/>
+        <enum name="msg_id" type="uint8" semanticType="messageId">
+            <validValue name="vn_1" val="0x1" />
         </enum>
     </fields>
     
-    <message name="Msg1" id="MsgId.M1" displayName="Message 1"/>
-    <message name="Msg2" id="MsgId.M2" displayName="Message 2"/>    
-    
-    <frame name="Frame">
-        <id name="ID" field="MsgId" />
-        <payload name="Data" />
+    <message name="test_msg" id="msg_id.vn_1" displayName="vn message 1"/>
+     
+    <frame name="test_frame">
+        <id name="id" field="msg_id" />
+        <payload name="frame_data" />
     </frame>
 </schema>

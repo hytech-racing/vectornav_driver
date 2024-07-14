@@ -20,7 +20,8 @@
         perSystem = { config, pkgs, system, ... }:
           let
             vn_driver_lib_gen_src = pkgs.callPackage ./vn_driver_lib_gen.nix { };
-            vn_driver_lib_gen = pkgs.callPackage ./vn_driver_lib.nix { vn_driver_lib_gen_src = vn_driver_lib_gen_src; };
+            vn_driver_lib_gen = pkgs.callPackage ./vn_driver_lib.nix { inherit vn_driver_lib_gen_src; };
+            vn_driver = pkgs.callPackage ./default.nix { inherit vn_driver_lib_gen; };
           in
           {
             _module.args.pkgs = import inputs.nixpkgs {
@@ -31,10 +32,33 @@
               config = { };
             };
             packages.vn_driver_lib_gen = vn_driver_lib_gen;
-            packages.default = vn_driver_lib_gen;
+            packages.vn_driver_lib_gen_src = vn_driver_lib_gen_src;
+            packages.vn_driver = vn_driver;
+            packages.default = vn_driver;
             overlayAttrs = {
               inherit (config.packages) default;
             };
+            devshells.default = {
+            env = [
+              {
+                name = "HTTP_PORT";
+                value = 8080;
+              }
+            ];
+            commands = [
+              {
+                help = "print hello";
+                name = "hello";
+                command = "echo hello";
+              }
+            ];
+            packages = [
+              pkgs.cowsay
+              vn_driver_lib_gen
+              pkgs.cmake
+              pkgs.commslib
+            ];
+          };
             # legacyPackages =
             #   import nixpkgs {
             #     inherit system;
