@@ -1,21 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- im going to make a single packet that has two 8 bit integers in it and a 15 character string -->
+<!--for testing im going to make a single packet that has two 8 bit integers in it and a 15 character string -->
+
+<!-- for the vectornav lib: -->
+<!-- what I am thinking is that there is a single message that has the numeric id equal to the sync byte -->
+<!-- there will be a single message with 3 sets for the the groups / group fields and there will be a lot of optional values. -->
 <schema name="vectornav" endian="little">
 
-    <fields>
-        <int name="vn_int1" type="int8"/>
-        <int name="vn_int2" type="int8"/>
-        <string name="asdf" length="15"/>
-        <enum name="msg_id" type="uint8" semanticType="messageId">
-            <validValue name="vn_1" val="0x1" />
-        </enum>
-    </fields>
+    <message name="vectornav_msg" id="0xFA">
+        <set name="groups" type="uint8">
+            <bit name="general_purpose" idx="0" />
+            <bit name="time_and_event_count" idx="1" />
+            <bit name="inertial_measurement_unit" idx="2" />
+            <bit name="gps_1" idx="3" /> 
+            <bit name="AHRS" idx="4" /> 
+            <bit name="INS" idx="5" /> 
+            <bit name="gps_2" idx="6" /> 
+            <bit name="reserved" idx="7" reserved="true"> 
+                <defaultValue value="false" />
+                <reservedValue value="false" />
+            </bit>
+        </set>
+
+        <optional name="gf1_condition" defaultMode="missing" cond="$groups.general_purpose">
+            <set name="bg1" type="uint16">
+                <bit name = "TimeStartup" idx="0" />
+                <bit name = "TimeGps" idx="1" />
+                <bit name = "TimeSyncIn" idx="2" />
+                <bit name = "Ypr" idx="3" />
+                <bit name = "Qtn" idx="4" />
+                <bit name = "AngularRate" idx="5" />
+                <bit name = "Position" idx="6" />
+                <bit name = "Velocity" idx="7" />
+                <bit name = "Accel" idx="8" />
+                <bit name = "Imu" idx="9" />
+                <bit name = "MagPres" idx="10" />
+                <bit name = "DeltaTheta" idx="11" />
+                <bit name = "InsStatus" idx="12" />
+                <bit name = "SyncInCnt" idx="13" />
+                <bit name = "TimeGpsPps" idx="14" />
+                <bit name = "Resv" idx="15" /> 
+            </set>
+        </optional>
+        <!-- TimeStartup 0 Time since startup.
+TimeGps 1 GPS time.
+TimeSyncIn 2 Time since last SyncIn trigger.
+Ypr 3 Estimated attitude as yaw pitch and roll angles.
+Qtn 4 Estimated attitude as a quaternion.
+AngularRate 5 Compensated angular rate.
+Position 6 Estimated position. (LLA)
+Velocity 7 Estimated velocity. (NED)
+Accel 8 Estimated acceleration (compensated). (Body)
+Imu 9 Calibrated uncompensated gyro and accelerometer
+measurements.
+MagPres 10 Calibrated magnetic (compensated), temperature,
+and pressure measurements.
+DeltaTheta 11 Delta time, theta, and velocity.
+InsStatus 12 INS status.
+SyncInCnt 13 SyncIn count.
+TimeGpsPps 14 Time since last GPS PPS trigger.
+Resv 15 Reserved for future use. Should be set to zero. -->
+        <!-- <set name="groups field 2" type="uint16">
+            <bit name="general_purpose" idx="0" />
+            <bit name="time_and_event_count" idx="1" />
+            <bit name="inertial_measurement_unit" idx="2" />
+            <bit name="gps_1" idx="3" /> 
+            <bit name="AHRS" idx="4" /> 
+            <bit name="INS" idx="5" /> 
+            <bit name="gps_2" idx="6" /> 
+            <bit name="reserved" idx="7" reserved="true"> 
+                <defaultValue value="false" />
+                <reservedValue value="false" />
+            </bit>
+        </set> -->
+    </message>
     
-    <message name="test_msg" id="msg_id.vn_1" displayName="vn message 1"/>
-     
-    <frame name="test_frame">
-        <id name="id" field="msg_id" />
-        <payload name="frame_data" />
-    </frame>
 </schema>

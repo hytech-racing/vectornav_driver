@@ -13,5 +13,10 @@ add_executable(vn_driver
 target_link_libraries(vn_driver PUBLIC cc::vectornav)
 set_target_properties(vn_driver PROPERTIES CXX_STANDARD 17)
 target_compile_features(vn_driver PRIVATE cxx_std_17)
+target_include_directories(vn_driver
+                           PUBLIC
+                           "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+                           "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/include>"
+)
 
 install(TARGETS vn_driver DESTINATION bin)
