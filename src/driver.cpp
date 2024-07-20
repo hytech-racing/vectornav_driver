@@ -1,5 +1,7 @@
 #include "driver.h"
 #include <iostream>
+
+
 void Driver::handle(vn_msg &msg)
 {
     std::cout << "test groups gp out " << msg.field_groups().getBitValue_general_purpose() << std::endl;
@@ -18,6 +20,5 @@ void Driver::sendMessage(const OutMessage& msg, const std::function<void(const s
     }
     static_cast<void>(es);
     assert(es == comms::ErrorStatus::Success); // do not expect any error
-
     send_function(out_buf);
 }
