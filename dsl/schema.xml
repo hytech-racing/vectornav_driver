@@ -74,5 +74,10 @@ Resv 15 Reserved for future use. Should be set to zero. -->
             </bit>
         </set> -->
     </message>
-    
+    <frame name="frame">
+        <id name="Id">
+            <int name="IdField" type="uint8" />
+        </id>
+        <payload name="Data" />
+    </frame>
 </schema>

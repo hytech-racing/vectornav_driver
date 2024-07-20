@@ -58,6 +58,7 @@
               pkgs.cmake
               pkgs.commslib
             ];
+            packagesFrom = [ vn_driver ];
           };
             # legacyPackages =
             #   import nixpkgs {

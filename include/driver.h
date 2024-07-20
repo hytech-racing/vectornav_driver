@@ -3,44 +3,47 @@
 #include <iterator>
 
 #include "vectornav/Message.h"
+#include "vectornav/frame/Frame.h"
+#include "comms/units.h"
+#include "comms/process.h"
 
-class Driver 
+
+class Driver
 {
 
 public:
-    using Message =
+    using InMessage =
         vectornav::Message<
-            comms::option::app::ReadIterator<const std::uint8_t *>,                                  // Polymorphic read
-            comms::option::app::WriteIterator<std::back_insert_iterator<std::vector<std::uint8_t>>>, // Polymorphic write
-            comms::option::app::LengthInfoInterface,                                                 // Polymorphic length calculation
-            comms::option::app::IdInfoInterface,                                                     // Polymorphic message ID retrieval
-            comms::option::app::NameInterface,                                                       // Polymorphic message name retrieval
-            comms::option::app::Handler<Driver>                                               // Polymorphic dispatch
+            comms::option::app::ReadIterator<const std::uint8_t *>, // Polymorphic read                                                      
+            comms::option::app::Handler<Driver>                     // Polymorphic dispatch
             >;
-
-    using vn_msg = vectornav::message::vectornav_msg<Message>;
+    using OutMessage =
+        vectornav::Message<
+            comms::option::IdInfoInterface,
+            comms::option::WriteIterator<std::back_insert_iterator<std::vector<std::uint8_t>> >,
+            comms::option::LengthInfoInterface
+        >;
+    using vn_msg = vectornav::message::Vectornav_msg<InMessage>;
 
     void handle(vn_msg &msg);
-    void handle(Message &msg);
-
+    void handle(InMessage &msg)
+    {
+        static_cast<void>(msg); // ignore
+    }
+void sendMessage(const OutMessage &msg, const std::function<void(const std::vector<uint8_t>&)>& send_function);
+    
 protected:
-    virtual bool startImpl() override final;
-    virtual std::size_t processInputImpl(const std::uint8_t *buf, std::size_t bufLen) override final;
+    
 
 private:
-    enum CommsStage
-    {
-        CommsStage_vectornav_msg,
-        CommsStage_NumOfValues
-    };
+    using AllInMessages =
+        std::tuple<
+            vn_msg>;
 
-    void sendMessage(const Message& msg);
-    void doNextStage();
-    void sendvectornav_msg();
+    
 
-    using Frame = vectornav::frame::Frame<Message>;
-    Frame m_frame;
-    CommsStage m_currentStage = CommsStage_NumOfValues;
+    using Frame = vectornav::frame::Frame<InMessage, AllInMessages>;
+    Frame _msg_frame;
 };
 
 // what I want to do is to test out the writing
