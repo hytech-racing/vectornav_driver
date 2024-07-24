@@ -8,6 +8,7 @@ find_package(vectornav REQUIRED)
 find_package(Boost REQUIRED system)
 add_executable(vn_driver
     src/main_cons.cpp
+    src/driver.cpp
 )
 
 add_executable(vn_driver_tester
