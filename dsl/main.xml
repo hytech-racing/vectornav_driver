@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--for testing im going to make a single packet that has two 8 bit integers in it and a 15 character string -->
+
+<!-- for the vectornav lib: -->
+<!-- what I am thinking is that there is a single message that has the numeric id equal to the sync byte -->
+<!-- there will be a single message with 3 sets for the the groups / group fields and there will be a lot of optional values. -->
+<schema name="vectornav" endian="little">
+        <fields>
+        <bundle name="ang_rad_bundle">
+            <float name="ang_rad_s1" type="float"/>
+            <float name="ang_rad_s2" type="float"/>
+            <float name="ang_rad_s3" type="float"/>
+        </bundle>
+        <bundle name="ypr_bundle">
+            <float name="yaw" type="float" units="deg"/>
+            <float name="pitch" type="float" units="deg"/>
+            <float name="roll" type="float" units="deg"/>
+        </bundle>
+        <bundle name="atitude_quat_bundle">
+            <float name="atitude_quat_q1" type="float"/>
+            <float name="atitude_quat_q2" type="float"/>
+            <float name="atitude_quat_q3" type="float"/>
+            <float name="atitude_quat_q4" type="float"/>
+        </bundle>
+
+        <bundle name="position_bundle">
+            <float name="latitude" type="double" units="deg"/>
+            <float name="longitude" type="double" units="deg"/>
+            <float name="altitude" type="double" units="m"/>
+        </bundle>
+        <bundle name="velocity_bundle">
+            <float name="vel_ned_1" type="float" units="m/s"/>
+            <float name="vel_ned_2" type="float" units="m/s"/>
+            <float name="vel_ned_3" type="float" units="m/s"/>
+        </bundle>
+
+        <bundle name="accel_bundle">
+            <float name="accel_ned_x" type="float"/>
+            <float name="accel_ned_y" type="float"/>
+            <float name="accel_ned_z" type="float"/>
+        </bundle>
+
+        <bundle name="imu_bundle">
+            <float name="imu_accel_x" type="float"/>
+            <float name="imu_accel_y" type="float"/>
+            <float name="imu_accel_z" type="float"/>
+            <float name="imu_rate_x" type="float"/>
+            <float name="imu_rate_y" type="float"/>
+            <float name="imu_rate_z" type="float"/>
+        </bundle>
+
+        <bundle name="magpres_bundle">
+            <float name="mag_x" type="float"/>
+            <float name="mag_y" type="float"/>
+            <float name="mag_z" type="float"/>
+            <float name="temp" type="float"/>
+            <float name="pres" type="float"/>
+        </bundle>
+        
+        <bundle name="deltathetavel_bundle">
+            <float name="delta_time" type="float" units="sec"/>
+            <float name="delta_theta_x" type="float" units="deg"/>
+            <float name="delta_theta_y" type="float" units="deg"/>
+            <float name="delta_theta_z" type="float" units="deg"/>
+            <float name="delta_velocity_x" type="float" units="m/s"/>
+            <float name="delta_velocity_y" type="float" units="m/s"/>
+            <float name="delta_velocity_z" type="float" units="m/s"/>
+        </bundle>
+
+    </fields>
+
+
+    <frame name="frame">
+        <id name="Id">
+            <int name="IdField" type="uint8" />
+        </id>
+        <payload name="Data" />
+        <checksum name="Checksum" alg="crc-16" from="Data">
+            <int name="ChecksumField" type="uint16" />
+        </checksum>
+    </frame>
+    
+    <message name="vectornav_msg" id="0xFA">
+        <set name="groups" type="uint8">
+            <bit name="general_purpose" idx="0" />
+            <bit name="time_and_event_count" idx="1" />
+            <bit name="inertial_measurement_unit" idx="2" />
+            <bit name="gps_1" idx="3" /> 
+            <bit name="AHRS" idx="4" /> 
+            <bit name="INS" idx="5" /> 
+            <bit name="gps_2" idx="6" /> 
+            <bit name="reserved" idx="7" reserved="true"> 
+                <defaultValue value="false" />
+                <reservedValue value="false" />
+            </bit>
+        </set>
+        <optional name="bg1_cond" defaultMode="missing" cond="$groups.general_purpose">
+            <set name="bg1" type="uint16">
+                <bit name = "TimeStartup" idx="0" />
+                <bit name = "TimeGps" idx="1" />
+                <bit name = "TimeSyncIn" idx="2" />
+                <bit name = "Ypr" idx="3" />
+                <bit name = "Qtn" idx="4" />
+                <bit name = "AngularRate" idx="5" />
+                <bit name = "Position" idx="6" />
+                <bit name = "Velocity" idx="7" />
+                <bit name = "Accel" idx="8" />
+                <bit name = "Imu" idx="9" />
+                <bit name = "MagPres" idx="10" />
+                <bit name = "DeltaTheta" idx="11" />
+                <bit name = "InsStatus" idx="12" />
+                <bit name = "SyncInCnt" idx="13" />
+                <bit name = "TimeGpsPps" idx="14" />
+                <bit name = "Resv" idx="15" reserved="true"/> 
+            </set>
+        </optional>
+        <!-- available units: https://commschamp.github.io/commsdsl_spec/#appendix-units -->
+        <optional name="timestartup_condition" defaultMode="missing" cond="$bg1_cond.bg1.TimeStartup">
+            <int name="timestartup" type="uint64" units="ns"/> 
+        </optional>
+        
+        <optional name="timegps_condition" defaultMode="missing" cond="$bg1_cond.bg1.TimeGps"> 
+            <int name="timegps" type="uint64" units="ns"/> 
+        </optional>
+
+        <optional name="TimeSyncIn_condition" defaultMode="missing" cond="$bg1_cond.bg1.TimeSyncIn">
+            <int name="TimeSyncIn" type="uint64" units="ns"/>  
+        </optional>
+        
+        <optional name="ypr_condition" defaultMode="missing" cond="$bg1_cond.bg1.Ypr"> 
+            <bundle name="ypr_fields" reuse="ypr_bundle"/>
+        </optional>
+        
+        <optional name="quaternion_condition" defaultMode="missing" cond="$bg1_cond.bg1.Qtn">
+            <bundle name="atitude_quat_fields" reuse="atitude_quat_bundle"/>
+        </optional> 
+
+        <optional name="angularrate_condition" defaultMode="missing" cond="$bg1_cond.bg1.AngularRate">
+            <bundle name="ang_rad_fields" reuse="ang_rad_bundle"/>
+        </optional>
+
+        <optional name="position_condition" defaultMode="missing" cond="$bg1_cond.bg1.Position">
+            <bundle name="position_fields" reuse="position_bundle"/>
+        </optional>
+
+        <optional name="vel_condition" defaultMode="missing" cond="$bg1_cond.bg1.Velocity">
+            <bundle name="velocity_fields" reuse="velocity_bundle"/>
+        </optional>
+
+        <optional name="accel_condition" defaultMode="missing" cond="$bg1_cond.bg1.Accel">
+            <bundle name="accel_fields" reuse="accel_bundle"/>
+        </optional>
+
+        <optional name="imu_condition" defaultMode="missing" cond="$bg1_cond.bg1.Imu">
+            <bundle name="imu_fields" reuse="imu_bundle"/>
+        </optional>
+
+        <optional name="magpres_condition" defaultMode="missing" cond="$bg1_cond.bg1.MagPres">
+            <bundle name="magpres_fields" reuse="magpres_bundle"/>
+        </optional>
+        <optional name="deltatheta_condition" defaultMode="missing" cond="$bg1_cond.bg1.DeltaTheta">
+            <bundle name="deltathetavel_fields" reuse="deltathetavel_bundle"/>
+        </optional>
+
+        <optional name="insstatus_condition" defaultMode="missing" cond="$bg1_cond.bg1.InsStatus">
+            <bitfield name="INSStatus">
+                <enum name="mode" type="uint8" bitLength="2">
+                    <validValue name="not_tracking" val="0" />
+                    <validValue name="aligning" val="1" />
+                    <validValue name="tracking" val="2" />
+                    <validValue name="gps_loss" val="3" />
+                </enum>
+                <enum name="gps_fix" type="uint8" bitLength="1">
+                    <validValue name="gps_not_fixed" val="0" />
+                    <validValue name="gps_fixed" val="1" />
+                </enum>
+                <!-- Reserved 0 1 bit Reserved for future use and not currently used.
+                IMU Error 1 1 bit High if IMU communication error is detected.
+                Mag/Pres Error 2 1 bit High if Magnetometer or Pressure sensor error is detected.
+                GPS Error 3 1 bit High if GPS communication error is detected. -->
+                <set name="error_bits" type="uint8" bitLength="4">
+                    <bit name = "reserved" idx="0" />
+                    <bit name = "imu_error" idx="1" />
+                    <bit name = "mag_pres_error" idx="2" />
+                    <bit name = "gps_error" idx="3" />
+                </set>
+
+            <!-- GpsHeadingIns 8 1 bit In stationary operation, if set the INS Filter has fully aligned to the GPS Compass
+                    solution.
+                    In dynamic operation, the GPS Compass solution is currently aiding the INS Filter
+                    heading solution.
+                    GpsCompass 9 1 bit Indicates if the GPS compass is operational and reporting a heading solution. -->
+                <set name="gps" type="uint8" bitLength="3">
+                    <bit name="reserved" reserved="true" idx="0"/>
+                    <bit name="gps_heading_ins" idx="1"/>
+                    <bit name="gps_compass" idx="2"/>
+                </set>
+                <int name="reserved" type="uint8" reserved="true" bitLength="6"/>
+            </bitfield>
+
+        </optional>
+
+        <optional name="syncincount_condition" defaultMode="missing" cond="$bg1_cond.bg1.SyncInCnt">
+            <int name="sync_in_count" type="uint32"/>
+        </optional>
+
+        <optional name="timegpspps_condition" defaultMode="missing" cond="$bg1_cond.bg1.TimeGpsPps">
+            <int name="time_gps_pps" type="uint64" units="nanoseconds"/>
+        </optional>
+
+    </message>
+
+
+
+</schema>

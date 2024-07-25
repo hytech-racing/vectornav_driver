@@ -5,12 +5,12 @@ stdenv.mkDerivation {
   src = ./dsl;
   propagatedBuildInputs = [ commsdsl ];
   buildPhase = ''
-    ${commsdsl}/bin/commsdsl2comms schema.xml
+    ${commsdsl}/bin/commsdsl2comms main.xml
   '';
 
   installPhase = ''
     mkdir $out
-    cp schema.xml $out
+    cp *.xml $out
     cp -r include $out
     cp -r doc $out
     cp CMakeLists.txt $out
