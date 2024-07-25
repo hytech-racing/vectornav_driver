@@ -6,17 +6,19 @@
 <!-- what I am thinking is that there is a single message that has the numeric id equal to the sync byte -->
 <!-- there will be a single message with 3 sets for the the groups / group fields and there will be a lot of optional values. -->
 <schema name="vectornav" endian="little">
-        <fields>
+    <fields>
         <bundle name="ang_rad_bundle">
             <float name="ang_rad_s1" type="float"/>
             <float name="ang_rad_s2" type="float"/>
             <float name="ang_rad_s3" type="float"/>
         </bundle>
+
         <bundle name="ypr_bundle">
             <float name="yaw" type="float" units="deg"/>
             <float name="pitch" type="float" units="deg"/>
             <float name="roll" type="float" units="deg"/>
         </bundle>
+
         <bundle name="atitude_quat_bundle">
             <float name="atitude_quat_q1" type="float"/>
             <float name="atitude_quat_q2" type="float"/>
@@ -29,6 +31,7 @@
             <float name="longitude" type="double" units="deg"/>
             <float name="altitude" type="double" units="m"/>
         </bundle>
+
         <bundle name="velocity_bundle">
             <float name="vel_ned_1" type="float" units="m/s"/>
             <float name="vel_ned_2" type="float" units="m/s"/>
@@ -68,8 +71,29 @@
             <float name="delta_velocity_z" type="float" units="m/s"/>
         </bundle>
 
-    </fields>
+        <bundle name="gps_bundle">
+            <set name="gps_bg" type="uint16">
+                <bit name = "UTC" idx="0" />
+                <bit name = "Tow" idx="1" />
+                <bit name = "Week" idx="2" />
+                <bit name = "NumSats" idx="3" />
+                <bit name = "Fix" idx="4" />
+                <bit name = "PosLla" idx="5" />
+                <bit name = "PosEcef" idx="6" />
+                <bit name = "VelNed" idx="7" />
+                <bit name = "VelEcef" idx="8" />
+                <bit name = "PosU" idx="9" />
+                <bit name = "VelU" idx="10" />
+                <bit name = "TimeU" idx="11" />
+                <bit name = "TimeInfo" idx="12" />
+                <bit name = "DOP" idx="13" />
+                <bit name = "SatInfo" idx="14" />
+                <bit name = "Raw" idx="15" /> 
+            </set>
+            
+        </bundle>
 
+    </fields>
 
     <frame name="frame">
         <id name="Id">
@@ -95,6 +119,7 @@
                 <reservedValue value="false" />
             </bit>
         </set>
+
         <optional name="bg1_cond" defaultMode="missing" cond="$groups.general_purpose">
             <set name="bg1" type="uint16">
                 <bit name = "TimeStartup" idx="0" />
@@ -115,6 +140,128 @@
                 <bit name = "Resv" idx="15" reserved="true"/> 
             </set>
         </optional>
+
+        <optional name="bg2_cond" defaultMode="missing" cond="$groups.time_and_event_count">
+            <set name="bg2" type="uint16">
+                    <bit name = "TimeStartup" idx="0" />
+                    <bit name = "TimeGps" idx="1" />
+                    <bit name = "GpsTow" idx="2"/>
+                    <bit name = "GpsWeek" idx="3"/>
+                    <bit name = "TimeSyncIn" idx="4"/>
+                    <bit name = "TimeGpsPps" idx="5"/>
+                    <bit name = "TimeUTC" idx="6"/>
+                    <bit name = "SyncInCnt" idx="7" />
+                    <bit name = "SyncOutCnt" idx="8" />
+                    <bit name = "TimeStatus" idx="9" />
+                </set>
+        </optional>
+
+        <!-- 2 Uncompensated acceleration measurement.
+        3 Uncompensated angular rate measurement.
+        4 Temperature measurement.
+        5 Pressure measurement.
+        6 Delta theta angles.
+        7 Delta velocity.
+        8 Compensated magnetic measurement.
+        9 Compensated acceleration measurement.
+        10 -->
+        <optional name="bg3_cond" defaultMode="missing" cond="$groups.inertial_measurement_unit">
+            <set name="bg3" type="uint16">
+                    <bit name = "ImuStatus" idx="0" reserved="true"/>
+                    <bit name = "UnCompMag" idx="1" />
+                    <bit name = "UncompAccel" idx="2"/>
+                    <bit name = "UncompGyro" idx="3"/>
+                    <bit name = "Temp" idx="4"/>
+                    <bit name = "Pres" idx="5"/>
+                    <bit name = "DeltaTheta" idx="6"/>
+                    <bit name = "DeltaV" idx="7" />
+                    <bit name = "Mag" idx="8" />
+                    <bit name = "Accel" idx="9" />
+                    <bit name = "AngularRate" idx="10" />
+                    <!-- <bit name = "Resv" idx="11" reserved="true" bitLength="5"/> -->
+                </set>
+        </optional>
+            <!-- UTC 0 GPS UTC Time -->
+            <!-- Tow 1 GPS time of week -->
+            <!-- Week 2 GPS week -->
+            <!-- NumSats 3 Number of tracked satellites -->
+            <!-- Fix 4 GPS fix -->
+            <!-- PosLla 5 GPS position (latitude, longitude, altitude) -->
+            <!-- PosEcef 6 GPS position (ECEF) -->
+            <!-- VelNed 7 GPS velocity (NED) -->
+            <!-- VelEcef 8 GPS velocity (ECEF) -->
+            <!-- PosU 9 GPS position uncertainty (NED) -->
+            <!-- VelU 10 GPS velocity uncertainty -->
+            <!-- TimeU 11 GPS time uncertainty -->
+            <!-- TimeInfo 12 GPS time status and leap seconds -->
+            <!-- DOP 13 Dilution of precision values -->
+            <!-- SatInfo 14 Satellite Information -->
+            <!-- Raw 15 GPS Raw Measurements -->
+        <optional name="bg4_cond" defaultMode="missing" cond="$groups.gps_1">
+            <bundle name="gps_1_fields" reuse="gps_bundle"/> 
+        </optional>
+
+        <!-- 
+        Reserved 0 Reserved. Not used on this product.
+        Ypr 1 Yaw Pitch Roll
+        Qtn 2 Quaternion
+        DCM 3 Directional Cosine Matrix
+        MagNed 4 Compensated magnetic (NED)
+        AccelNed 5 Compensated acceleration (NED)
+        LinearAccelBody 6 Compensated linear acceleration (no gravity)
+        LinearAccelNed 7 Compensated linear acceleration (no gravity) (NED)
+        YprU 8 Yaw Pitch Roll uncertainty
+        Resv 9-15 Reserved for future use. Should be set to zero. -->
+        <optional name="bg5_cond" defaultMode="missing" cond="$groups.AHRS">
+            <set name="bg5" type="uint16">
+                <bit name = "Resv" idx="0" reserved="true"/>
+                <bit name = "Ypr" idx="1" />
+                <bit name = "Qtn" idx="2" />
+                <bit name = "DCM" idx="3" />
+                <bit name = "MagNed" idx="4" />
+                <bit name = "AccelNed" idx="5" />
+                <bit name = "LinearAccelBody" idx="6" />
+                <bit name = "LinearAccelNed" idx="7" />
+                <bit name = "YprU" idx="8" />
+                <!-- <bit name = "Resv" idx="8" reserved="true" bitLength="8"/> -->
+            </set>
+        </optional>
+        <!-- 
+        InsStatus 0 Ins Status
+        PosLla 1 Ins Position (latitude, longitude, altitude)
+        PosEcef 2 Ins Position (ECEF)
+        VelBody 3 Ins Velocity (Body)
+        VelNed 4 Ins Velocity (NED)
+        VelEcef 5 Ins Velocity (ECEF)
+        MagEcef 6 Compensated magnetic (ECEF)
+        AccelEcef 7 Compensated acceleration (ECEF)
+        LinearAccelEcef 8 Compensated linear acceleration (no gravity) (ECEF)
+        PosU 9 Ins Position Uncertainty
+        VelU 10 Ins Velocity Uncertainty
+        Resv 11-15 Reserved for future use. Should be set to zero. -->
+
+        <optional name="bg6_cond" defaultMode="missing" cond="$groups.AHRS">
+            <set name="bg6" type="uint16">
+                <bit name = "InsStatus" idx="0" />
+                <bit name = "PosLla" idx="1" />
+                <bit name = "PosEcef" idx="2" />
+                <bit name = "VelBody" idx="3" />
+                <bit name = "VelNed" idx="4" />
+                <bit name = "VelEcef" idx="5" />
+                <bit name = "MagEcef" idx="6" />
+                <bit name = "AccelEcef" idx="7" />
+                <bit name = "LinearAccelEcef" idx="8" />
+                <bit name = "PosU" idx="9" />
+                <bit name = "VelU" idx="10"/>
+                <!-- <bit name = "Resv" idx="11" reserved="true" bitLength="5"/> -->
+            </set>
+        </optional>
+
+        <optional name="bg7_cond" defaultMode="missing" cond="$groups.gps_2">
+            <bundle name="gps_2_fields" reuse="gps_bundle"/>
+        </optional>
+
+        <!-- <bundle name="binary_group_1"> -->
         <!-- available units: https://commschamp.github.io/commsdsl_spec/#appendix-units -->
         <optional name="timestartup_condition" defaultMode="missing" cond="$bg1_cond.bg1.TimeStartup">
             <int name="timestartup" type="uint64" units="ns"/> 
@@ -207,6 +354,35 @@
 
         <optional name="timegpspps_condition" defaultMode="missing" cond="$bg1_cond.bg1.TimeGpsPps">
             <int name="time_gps_pps" type="uint64" units="nanoseconds"/>
+        </optional>
+
+        <!-- 
+        ##########################
+        ##### BINARY GROUP 2 #####
+        ########################## -->
+
+       <optional name="timestartup_condition_bg2" defaultMode="missing" cond="$bg2_cond.bg2.TimeStartup">
+            <int name="timestartup" type="uint64" units="ns"/> 
+        </optional> 
+
+       <optional name="timegps_condition_bg2" defaultMode="missing" cond="$bg2_cond.bg2.TimeGps">
+            <int name="timegps" type="uint64" units="ns"/> 
+        </optional>
+         
+        <optional name="gpstow_condition" defaultMode="missing" cond="$bg2_cond.bg2.GpsTow">
+            <int name="gpstow" type="uint64" units="ns"/> 
+        </optional>
+
+        <optional name="gpsweek_condition" defaultMode="missing" cond="$bg2_cond.bg2.GpsWeek">
+            <int name="gpsweek" type="uint16"/> 
+        </optional>
+
+        <optional name="timesyncin_condition" defaultMode="missing" cond="$bg2_cond.bg2.TimeSyncIn">
+            <int name="timesyncin" type="uint64"/> 
+        </optional>
+
+        <optional name="timegpspps_condition_bg2" defaultMode="missing" cond="$bg2_cond.bg2.TimeGpsPps">
+            <int name="timegpspps" type="uint64"/> 
         </optional>
 
     </message>
