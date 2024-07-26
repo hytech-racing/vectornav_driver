@@ -93,6 +93,106 @@
             
         </bundle>
 
+        <bundle name="uncompmag_bundle">
+            <float name="mag_0" type="float" />
+            <float name="mag_1" type="float" />
+            <float name="mag_2" type="float" />
+        </bundle>
+
+        <bundle name="uncompaccel_bundle">
+            <float name="accel_1" type="float" />
+            <float name="accel_2" type="float" />
+            <float name="accel_3" type="float" />
+        </bundle>
+
+        <bundle name="uncompgyro_bundle">
+            <float name="gyro_1" type="float" />
+            <float name="gyro_2" type="float" />
+            <float name="gyro_3" type="float" />
+        </bundle>
+
+        <bundle name="deltatheta_bundle">
+            <float name="dtime" type="float" units="sec" />
+            <float name="dtheta_1" type="float" units="deg" />
+            <float name="dtheta_2" type="float" units="deg" />
+            <float name="dtheta_3" type="float" units="deg" />
+            <float name="dtheta_4" type="float" units="deg" />
+        </bundle>
+
+        <bundle name="deltav_bundle">
+            <float name="dvel_x" type="float" units="m/s" />
+            <float name="dvel_y" type="float" units="m/s" />
+            <float name="dvel_z" type="float" units="m/s" />
+        </bundle>
+
+        <bundle name="mag_bundle">
+            <float name="mag_x" type="float" units="G" />
+            <float name="mag_y" type="float" units="G" />
+            <float name="mag_z" type="float" units="G" />
+        </bundle>
+
+        <bundle name="accel_bundle">
+            <float name="accel_x" type="float" units="m/s^2" />
+            <float name="accel_y" type="float" units="m/s^2" />
+            <float name="accel_z" type="float" units="m/s^2" />
+        </bundle>
+
+        <bundle name="angularrate_bundle">
+            <float name="gyro_1" type="float" units="rad/s" />
+            <float name="gyro_2" type="float" units="rad/s" />
+            <float name="gyro_3" type="float" units="rad/s" />
+        </bundle>
+
+        <bundle name="utc_bundle">
+            <int name="year" type="int8" />
+            <int name="month" type="uint8" />
+            <int name="day" type="uint8" />
+            <int name="hour" type="uint8" />
+            <int name="min" type="uint6" />
+            <int name="sec" type="uint8" />
+            <int name="ms" type="uint16" />
+        </bundle>
+
+        <bundle name="poslla_bundle">
+            <double name="latitude" type="double" units="deg" />
+            <double name="longitude" type="double" units="deg" />
+            <double name="altitude" type="double" units="m" />
+        </bundle>
+
+        <bundle name="posecef_bundle">
+            <double name="pos_x" type="double" units="m" />
+            <double name="pos_y" type="double" units="m" />
+            <double name="pos_z" type="double" units="m" />
+        </bundle>
+
+        <bundle name="velned_bundle">
+            <float name="vel_x" type="float" units="m/s" />
+            <float name="vel_y" type="float" units="m/s" />
+            <float name="vel_y" type="float" units="m/s" />
+        </bundle>
+
+        <bundle name="velecef_bundle">
+            <float name="velecef_x" type="float" units="m/s" />
+            <float name="velecef_y" type="float" units="m/s" />
+            <float name="velecef_z" type="float" units="m/s" />
+        </bundle>
+
+        <bundle name="posu_bundle">
+            <float name="posu_x" type="float" units="m" />
+            <float name="posu_y" type="float" units="m" />
+            <float name="posu_z" type="float" units="m" />
+        </bundle>
+
+        <bundle name="dop_bundle">
+            <float name="gdop" type="float" />
+            <float name="pdop" type="float" />
+            <float name="tdop" type="float" />
+            <float name="vdop" type="float" />
+            <float name="hdop" type="float" />
+            <float name="ndop" type="float" />
+            <float name="edop" type="float" />
+        </bundle>
+
     </fields>
 
     <frame name="frame">
@@ -401,6 +501,112 @@
 
         <optional name="timegpspps_condition_bg2" defaultMode="missing" cond="$bg2_cond.bg2.TimeGpsPps">
             <int name="timegpspps" type="uint64"/> 
+        </optional>
+
+        <!-- 
+        ##########################
+        ##### BINARY GROUP 3 #####
+        ########################## -->
+
+        <optional name="imustatus_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.ImuStatus">
+            <int name="imustatus" type="uint16" />
+        </optional>
+
+        <optional name="uncompmag_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.UncompMag">
+            <bundle name="uncompmag_fields" reuse="uncompmag_bundle"/>
+        </optional>
+
+        <optional name="uncompaccel_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.UncompAccel">
+            <bundle name="uncompaccel_fields" reuse="uncompaccel_bundle"/>
+        </optional>
+
+        <optional name="uncompgyro_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.UncompGyro">
+            <bundle name="uncompgyro_fields" reuse="uncompgyro_bundle"/>
+        </optional>
+
+        <optional name="temp_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.Temp">
+            <float name="temp" type="float64" units="C" />
+        </optional>
+
+        <optional name="pres_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.Pres">
+            <float name="pres" type="float64" units="kPa" />
+        </optional>
+
+        <optional name="deltatheta_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.DeltaTheta">
+            <bundle name="deltatheta_fields" reuse="deltatheta_bundle"/>
+        </optional>
+
+        <optional name="deltav_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.DeltaV">
+            <bundle name="deltav_fields" reuse="deltav_bundle"/>
+        </optional>
+
+        <optional name="mag_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.Mag">
+            <bundle name="mag_fields" reuse="mag_bundle"/>
+        </optional>
+
+        <optional name="accel_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.Accel">
+            <bundle name="accel_fields" reuse="accel_bundle"/>
+        </optional>
+
+        <optional name="angularrate_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.AngularRate">
+            <bundle name="angularrate_fields" reuse="angularrate_bundle"/>
+        </optional>
+
+        <!-- 
+        ##########################
+        ##### BINARY GROUP 4 #####
+        ########################## -->
+
+        <optional name="utc_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.UTC">
+            <bundle name="utc_fields" reuse="angularrate_bundle"/>
+        </optional>
+
+        <optional name="tow_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.Tow">
+            <int name="tow" type="unint64" units="ms" />
+        </optional>
+
+        <optional name="week_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.Week">
+            <int name="week" type="uint16" />
+        </optional>
+
+        <optional name="numseats_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.NumSeats">
+            <int name="numsats" type="uint8" />
+        </optional>
+
+        <optional name="fix_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.Fix">
+            <int name="fix" type="uint8" />
+        </optional>
+
+        <optional name="poslla_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.PosLla">
+            <bundle name="poslla_fields" reuse="poslla_bundle"/>
+        </optional>
+
+        <optional name="posecef_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.PosEcef">
+            <bundle name="posecef_fields" reuse="posecef_bundle"/>
+        </optional>
+
+        <optional name="velned_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.VelNed">
+            <bundle name="velned_fields" reuse="velned_bundle"/>
+        </optional>
+
+        <optional name="velecef_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.VeelEcef">
+            <bundle name="velecef_fields" reuse="ecef_bundle"/>
+        </optional>
+
+        <optional name="posu_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.PosU">
+            <bundle name="posu_fields" reuse="posu_bundle"/>
+        </optional>
+
+        <optional name="velu_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.VelU">
+            <float name="velu_fields" type="float" units="m/s" />
+        </optional>
+
+        <optional name="timeu_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.TimeU">
+            <int name="timeu_fields" type="uint32" units="ns" />
+        </optional>
+
+        <optional name="dop_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.DOP">
+            <bundle name="dop_fields" reuse="dop_bundle" />
         </optional>
 
     </message>
