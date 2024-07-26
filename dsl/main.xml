@@ -33,9 +33,9 @@
         </bundle>
 
         <bundle name="velocity_bundle">
-            <float name="vel_ned_1" type="float" units="m/s"/>
-            <float name="vel_ned_2" type="float" units="m/s"/>
-            <float name="vel_ned_3" type="float" units="m/s"/>
+            <float name="vel_x" type="float" units="m/s"/>
+            <float name="vel_y" type="float" units="m/s"/>
+            <float name="vel_z" type="float" units="m/s"/>
         </bundle>
 
         <bundle name="accel_bundle">
@@ -126,21 +126,21 @@
         </bundle>
 
         <bundle name="mag_bundle">
-            <float name="mag_x" type="float" units="G" />
-            <float name="mag_y" type="float" units="G" />
-            <float name="mag_z" type="float" units="G" />
+            <float name="mag_x" type="float"/>
+            <float name="mag_y" type="float"/>
+            <float name="mag_z" type="float"/>
         </bundle>
 
-        <bundle name="accel_bundle">
-            <float name="accel_x" type="float" units="m/s^2" />
-            <float name="accel_y" type="float" units="m/s^2" />
-            <float name="accel_z" type="float" units="m/s^2" />
-        </bundle>
+        <!-- <bundle name="accel_bundle">
+            <float name="accel_x" type="float" />
+            <float name="accel_y" type="float" />
+            <float name="accel_z" type="float" />
+        </bundle> -->
 
         <bundle name="angularrate_bundle">
-            <float name="gyro_1" type="float" units="rad/s" />
-            <float name="gyro_2" type="float" units="rad/s" />
-            <float name="gyro_3" type="float" units="rad/s" />
+            <float name="gyro_1" type="float" />
+            <float name="gyro_2" type="float" />
+            <float name="gyro_3" type="float" />
         </bundle>
 
         <bundle name="utc_bundle">
@@ -148,28 +148,23 @@
             <int name="month" type="uint8" />
             <int name="day" type="uint8" />
             <int name="hour" type="uint8" />
-            <int name="min" type="uint6" />
+            <int name="min" type="uint8" />
             <int name="sec" type="uint8" />
             <int name="ms" type="uint16" />
         </bundle>
 
-        <bundle name="poslla_bundle">
-            <double name="latitude" type="double" units="deg" />
-            <double name="longitude" type="double" units="deg" />
-            <double name="altitude" type="double" units="m" />
-        </bundle>
 
         <bundle name="posecef_bundle">
-            <double name="pos_x" type="double" units="m" />
-            <double name="pos_y" type="double" units="m" />
-            <double name="pos_z" type="double" units="m" />
+            <float name="pos_ecef_x" units="m" type="double"/>
+            <float name="pos_ecef_y" units="m" type="double"/>
+            <float name="pos_ecef_z" units="m" type="double"/>
         </bundle>
 
-        <bundle name="velned_bundle">
+        <!-- <bundle name="velned_bundle">
             <float name="vel_x" type="float" units="m/s" />
             <float name="vel_y" type="float" units="m/s" />
             <float name="vel_y" type="float" units="m/s" />
-        </bundle>
+        </bundle> -->
 
         <bundle name="velecef_bundle">
             <float name="velecef_x" type="float" units="m/s" />
@@ -184,13 +179,13 @@
         </bundle>
 
         <bundle name="dop_bundle">
-            <float name="gdop" type="float" />
-            <float name="pdop" type="float" />
-            <float name="tdop" type="float" />
-            <float name="vdop" type="float" />
-            <float name="hdop" type="float" />
-            <float name="ndop" type="float" />
-            <float name="edop" type="float" />
+            <float name="gdilutionofpercentage" type="float" />
+            <float name="pdilutionofpercentage" type="float" />
+            <float name="tdilutionofpercentage" type="float" />
+            <float name="vdilutionofpercentage" type="float" />
+            <float name="hdilutionofpercentage" type="float" />
+            <float name="ndilutionofpercentage" type="float" />
+            <float name="edilutionofpercentage" type="float" />
         </bundle>
 
     </fields>
@@ -299,24 +294,23 @@
             <!-- Raw 15 GPS Raw Measurements -->
         <optional name="bg4_cond" defaultMode="missing" cond="$groups.gps_1">
             <set name="bg4" type="uint16">
-                <bit name="UTC" idx="0" />
-                <bit name="Tow" idx="1" />
-                <bit name="Week" idx="2" />
-                <bit name="NumStats" idx="3" />
-                <bit name="Fix" idx="4" />
-                <bit name="PosLla" idx="5" />
-                <bit name="PosEcef" idx="6" />
-                <bit name="VelNed" idx="7" />
-                <bit name="VelEcef" idx="8" />
-                <bit name="PosU" idx="9" />
-                <bit name="VelU" idx="10" />
-                <bit name="TimeU" idx="11" />
-                <bit name="TimeInfo" idx="12" />
-                <bit name="DOP" idx="13" />
-                <bit name="SatInfo" idx="14" />
-                <bit name="Raw" idx="15" />
+                <bit name="bg4_UTC" idx="0" />
+                <bit name="bg4_Tow" idx="1" />
+                <bit name="bg4_Week" idx="2" />
+                <bit name="bg4_NumSats" idx="3" />
+                <bit name="bg4_Fix" idx="4" />
+                <bit name="bg4_PosLla" idx="5" />
+                <bit name="bg4_PosEcef" idx="6" />
+                <bit name="bg4_VelNed" idx="7" />
+                <bit name="bg4_VelEcef" idx="8" />
+                <bit name="bg4_PosU" idx="9" />
+                <bit name="bg4_VelUncertainty" idx="10" />
+                <bit name="bg4_TimeU" idx="11" />
+                <bit name="bg4_TimeInfo" idx="12" />
+                <bit name="bg4_DOP" idx="13" />
+                <bit name="bg4_SatInfo" idx="14" />
+                <bit name="bg4_Raw" idx="15" />
             </set>
-            <bundle name="gps_1_fields" reuse="gps_bundle"/> 
         </optional>
 
         <!-- 
@@ -330,7 +324,7 @@
         LinearAccelNed 7 Compensated linear acceleration (no gravity) (NED)
         YprU 8 Yaw Pitch Roll uncertainty
         Resv 9-15 Reserved for future use. Should be set to zero. -->
-        <optional name="bg5_cond" defaultMode="missing" cond="$groups.AHRS">
+        <!-- <optional name="bg5_cond" defaultMode="missing" cond="$groups.AHRS">
             <set name="bg5" type="uint16">
                 <bit name = "Resv" idx="0" reserved="true"/>
                 <bit name = "Ypr" idx="1" />
@@ -341,9 +335,8 @@
                 <bit name = "LinearAccelBody" idx="6" />
                 <bit name = "LinearAccelNed" idx="7" />
                 <bit name = "YprU" idx="8" />
-                <!-- <bit name = "Resv" idx="8" reserved="true" bitLength="8"/> -->
             </set>
-        </optional>
+        </optional> -->
         <!-- 
         InsStatus 0 Ins Status
         PosLla 1 Ins Position (latitude, longitude, altitude)
@@ -358,7 +351,7 @@
         VelU 10 Ins Velocity Uncertainty
         Resv 11-15 Reserved for future use. Should be set to zero. -->
 
-        <optional name="bg6_cond" defaultMode="missing" cond="$groups.AHRS">
+        <!-- <optional name="bg6_cond" defaultMode="missing" cond="$groups.AHRS">
             <set name="bg6" type="uint16">
                 <bit name = "InsStatus" idx="0" />
                 <bit name = "PosLla" idx="1" />
@@ -371,13 +364,12 @@
                 <bit name = "LinearAccelEcef" idx="8" />
                 <bit name = "PosU" idx="9" />
                 <bit name = "VelU" idx="10"/>
-                <!-- <bit name = "Resv" idx="11" reserved="true" bitLength="5"/> -->
             </set>
-        </optional>
+        </optional> -->
 
-        <optional name="bg7_cond" defaultMode="missing" cond="$groups.gps_2">
+        <!-- <optional name="bg7_cond" defaultMode="missing" cond="$groups.gps_2">
             <bundle name="gps_2_fields" reuse="gps_bundle"/>
-        </optional>
+        </optional> -->
 
         <!-- <bundle name="binary_group_1"> -->
         <!-- available units: https://commschamp.github.io/commsdsl_spec/#appendix-units -->
@@ -421,6 +413,10 @@
             <bundle name="imu_fields" reuse="imu_bundle"/>
         </optional>
 
+        <optional name="magpres_condition2" defaultMode="missing" cond="$bg1_cond.bg1.MagPres">
+            <bundle name="magpres_fields2" reuse="magpres_bundle"/>
+        </optional>
+
         <optional name="magpres_condition" defaultMode="missing" cond="$bg1_cond.bg1.MagPres">
             <bundle name="magpres_fields" reuse="magpres_bundle"/>
         </optional>
@@ -461,7 +457,9 @@
                     <bit name="gps_heading_ins" idx="1"/>
                     <bit name="gps_compass" idx="2"/>
                 </set>
-                <int name="reserved" type="uint8" reserved="true" bitLength="6"/>
+                <set name="SomeSetField" type="uint8" bitLength="6" defaultValue="false" reservedValue="false">
+                </set>
+                <!-- <int name="reserved" type="uint8" reserved="true" bitLength="6"/> -->
             </bitfield>
 
         </optional>
@@ -479,11 +477,11 @@
         ##### BINARY GROUP 2 #####
         ########################## -->
 
-       <optional name="timestartup_condition_bg2" defaultMode="missing" cond="$bg2_cond.bg2.TimeStartup">
+        <optional name="timestartup_condition_bg2" defaultMode="missing" cond="$bg2_cond.bg2.TimeStartup">
             <int name="timestartup" type="uint64" units="ns"/> 
         </optional> 
 
-       <optional name="timegps_condition_bg2" defaultMode="missing" cond="$bg2_cond.bg2.TimeGps">
+        <optional name="timegps_condition_bg2" defaultMode="missing" cond="$bg2_cond.bg2.TimeGps">
             <int name="timegps" type="uint64" units="ns"/> 
         </optional>
          
@@ -512,7 +510,7 @@
             <int name="imustatus" type="uint16" />
         </optional>
 
-        <optional name="uncompmag_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.UncompMag">
+        <optional name="uncompmag_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.UnCompMag">
             <bundle name="uncompmag_fields" reuse="uncompmag_bundle"/>
         </optional>
 
@@ -525,11 +523,11 @@
         </optional>
 
         <optional name="temp_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.Temp">
-            <float name="temp" type="float64" units="C" />
+            <float name="temp" type="double"/>
         </optional>
 
         <optional name="pres_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.Pres">
-            <float name="pres" type="float64" units="kPa" />
+            <float name="pres" type="double"/>
         </optional>
 
         <optional name="deltatheta_condition_bg3" defaultMode="missing" cond="$bg3_cond.bg3.DeltaTheta">
@@ -557,55 +555,56 @@
         ##### BINARY GROUP 4 #####
         ########################## -->
 
-        <optional name="utc_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.UTC">
+        <optional name="utc_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_UTC">
             <bundle name="utc_fields" reuse="angularrate_bundle"/>
         </optional>
 
-        <optional name="tow_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.Tow">
-            <int name="tow" type="unint64" units="ms" />
+        <optional name="tow_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_Tow">
+            <int name="tow_field" type="uint64" units="ms" />
         </optional>
 
-        <optional name="week_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.Week">
-            <int name="week" type="uint16" />
+        <optional name="week_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_Week">
+            <int name="week_field" type="uint16" />
         </optional>
 
-        <optional name="numseats_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.NumSeats">
-            <int name="numsats" type="uint8" />
+        <optional name="numsats_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_NumSats">
+            <int name="numsats_field" type="uint8" />
         </optional>
 
-        <optional name="fix_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.Fix">
-            <int name="fix" type="uint8" />
+        <optional name="fix_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_Fix">
+            <int name="fix_field" type="uint8" />
         </optional>
 
-        <optional name="poslla_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.PosLla">
-            <bundle name="poslla_fields" reuse="poslla_bundle"/>
+        <optional name="poslla_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_PosLla">
+            <bundle name="poslla_fields" reuse="position_bundle"/>
         </optional>
 
-        <optional name="posecef_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.PosEcef">
+        <optional name="posecef_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_PosEcef">
             <bundle name="posecef_fields" reuse="posecef_bundle"/>
         </optional>
 
-        <optional name="velned_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.VelNed">
-            <bundle name="velned_fields" reuse="velned_bundle"/>
+        <optional name="velned_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_VelNed">
+            <bundle name="velned_fields" reuse="velocity_bundle"/>
         </optional>
 
-        <optional name="velecef_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.VeelEcef">
-            <bundle name="velecef_fields" reuse="ecef_bundle"/>
+        <optional name="velecef_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_VelEcef">
+            <bundle name="velecef_fields" reuse="velocity_bundle"/>
         </optional>
 
-        <optional name="posu_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.PosU">
+        <optional name="posu_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_PosU">
             <bundle name="posu_fields" reuse="posu_bundle"/>
         </optional>
 
-        <optional name="velu_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.VelU">
-            <float name="velu_fields" type="float" units="m/s" />
-        </optional>
 
-        <optional name="timeu_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.TimeU">
+        <optional name="veluncertainty_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_VelUncertainty">
+            <float name="veluncertainasdflkasdf_field" type="float"/>
+        </optional>
+        
+        <optional name="timeu_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_TimeU">
             <int name="timeu_fields" type="uint32" units="ns" />
-        </optional>
+        </optional>  
 
-        <optional name="dop_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.DOP">
+        <optional name="dop_condition_bg4" defaultMode="missing" cond="$bg4_cond.bg4.bg4_DOP">
             <bundle name="dop_fields" reuse="dop_bundle" />
         </optional>
 
