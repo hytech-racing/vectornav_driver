@@ -198,6 +198,24 @@
             <!-- SatInfo 14 Satellite Information -->
             <!-- Raw 15 GPS Raw Measurements -->
         <optional name="bg4_cond" defaultMode="missing" cond="$groups.gps_1">
+            <set name="bg4" type="uint16">
+                <bit name="UTC" idx="0" />
+                <bit name="Tow" idx="1" />
+                <bit name="Week" idx="2" />
+                <bit name="NumStats" idx="3" />
+                <bit name="Fix" idx="4" />
+                <bit name="PosLla" idx="5" />
+                <bit name="PosEcef" idx="6" />
+                <bit name="VelNed" idx="7" />
+                <bit name="VelEcef" idx="8" />
+                <bit name="PosU" idx="9" />
+                <bit name="VelU" idx="10" />
+                <bit name="TimeU" idx="11" />
+                <bit name="TimeInfo" idx="12" />
+                <bit name="DOP" idx="13" />
+                <bit name="SatInfo" idx="14" />
+                <bit name="Raw" idx="15" />
+            </set>
             <bundle name="gps_1_fields" reuse="gps_bundle"/> 
         </optional>
 
