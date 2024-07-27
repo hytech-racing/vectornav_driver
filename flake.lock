@@ -54,7 +54,7 @@
     "devshell_2": {
       "inputs": {
         "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1721986491,
@@ -67,6 +67,25 @@
       "original": {
         "owner": "numtide",
         "repo": "devshell",
+        "type": "github"
+      }
+    },
+    "easy_cmake": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1722063861,
+        "narHash": "sha256-stvsY/sKBwJJkBcmNBnj+qSu0DC1CI4EADGT62jCL7I=",
+        "owner": "RCMast3r",
+        "repo": "easy_cmake",
+        "rev": "55e91a64cf273ad19b0f09a4991ef8ee884a4303",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RCMast3r",
+        "repo": "easy_cmake",
         "type": "github"
       }
     },
@@ -91,6 +110,24 @@
     "flake-parts_2": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib_2"
+      },
+      "locked": {
+        "lastModified": 1719994518,
+        "narHash": "sha256-pQMhCCHyQGRzdfAkdJ4cIWiw+JNuWsTX7f0ZYSyz0VY=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "9227223f6d922fee3c7b190b2cc238a99527bbb7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-parts_3": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib_3"
       },
       "locked": {
         "lastModified": 1719994518,
@@ -163,9 +200,9 @@
         "commsdsl-src": "commsdsl-src",
         "commslib-src": "commslib-src",
         "devshell": "devshell_2",
-        "flake-parts": "flake-parts_2",
+        "flake-parts": "flake-parts_3",
         "flow-ipc-src": "flow-ipc-src",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1722042882,
@@ -221,7 +258,35 @@
         "url": "https://github.com/NixOS/nixpkgs/archive/5daf0514482af3f97abaefc78a6606365c9108e2.tar.gz"
       }
     },
+    "nixpkgs-lib_3": {
+      "locked": {
+        "lastModified": 1719876945,
+        "narHash": "sha256-Fm2rDDs86sHy0/1jxTOKB1118Q0O3Uc7EC0iXvXKpbI=",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/5daf0514482af3f97abaefc78a6606365c9108e2.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/5daf0514482af3f97abaefc78a6606365c9108e2.tar.gz"
+      }
+    },
     "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1695825837,
+        "narHash": "sha256-4Ne11kNRnQsmSJCRSSNkFRSnHC4Y5gPDBIQGjjPfJiU=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5cfafa12d57374f48bcc36fda3274ada276cf69e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-23.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1704161960,
         "narHash": "sha256-QGua89Pmq+FBAro8NriTuoO/wNaUtugt29/qqA8zeeM=",
@@ -233,22 +298,6 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1721949857,
-        "narHash": "sha256-DID446r8KsmJhbCzx4el8d9SnPiE8qa6+eEQOJ40vR0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a1cc729dcbc31d9b0d11d86dc7436163548a9665",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-24.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -269,12 +318,29 @@
         "type": "github"
       }
     },
+    "nixpkgs_5": {
+      "locked": {
+        "lastModified": 1721949857,
+        "narHash": "sha256-DID446r8KsmJhbCzx4el8d9SnPiE8qa6+eEQOJ40vR0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a1cc729dcbc31d9b0d11d86dc7436163548a9665",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-24.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "devshell": "devshell",
-        "flake-parts": "flake-parts",
+        "easy_cmake": "easy_cmake",
+        "flake-parts": "flake-parts_2",
         "nebs-packages": "nebs-packages",
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_5"
       }
     },
     "systems": {

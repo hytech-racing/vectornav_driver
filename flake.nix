@@ -5,8 +5,9 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     devshell.url = "github:numtide/devshell";
     nebs-packages.url = "github:RCMast3r/nebs_packages";
+    easy_cmake.url = "github:RCMast3r/easy_cmake";
   };
-  outputs = { self, nixpkgs, flake-parts, devshell, nebs-packages, ... }@inputs:
+  outputs = { self, nixpkgs, flake-parts, devshell, nebs-packages, easy_cmake, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; }
       {
         systems = [
@@ -28,6 +29,7 @@
               inherit system;
               overlays = [
                 nebs-packages.overlays.default
+                easy_cmake.overlays.default
               ];
               config = { };
             };
@@ -36,15 +38,11 @@
             packages.vn_driver = vn_driver;
             packages.default = vn_driver;
             overlayAttrs = {
-              inherit (config.packages) default;
+              inherit (config.packages) default vn_driver_lib_gen vn_driver;
             };
             devshells.default = {
-            env = [
-              {
-                name = "HTTP_PORT";
-                value = 8080;
-              }
-            ];
+            env = [ ];
+            
             commands = [
               {
                 help = "print hello";
@@ -52,13 +50,12 @@
                 command = "echo hello";
               }
             ];
+
             packages = [
-              pkgs.cowsay
-              vn_driver_lib_gen
               pkgs.cmake
-              pkgs.commslib
             ];
-            packagesFrom = [ vn_driver ];
+
+            packagesFrom = [ vn_driver vn_driver_lib_gen ];
           };
             # legacyPackages =
             #   import nixpkgs {
