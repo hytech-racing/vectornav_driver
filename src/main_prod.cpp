@@ -34,18 +34,18 @@ int main() {
 
         using send_msg = vectornav::message::Vectornav_msg<Driver::OutMessage>;
         send_msg msg_to_send;
-        // msg_to_send.Field_groups().setBitValue_general_purpose(true);
-        // msg_to_send.field_bg1_cond().field().setBitValue_AngularRate(true);
-        // msg_to_send.field_bg1_cond().field().setBitValue_TimeStartup(true);
+        msg_to_send.field_groups().setBitValue_general_purpose(true);
+        msg_to_send.field_bg1_cond().field().setBitValue_AngularRate(true);
+        msg_to_send.field_bg1_cond().field().setBitValue_TimeStartup(true);
         
-        // msg_to_send.field_timestartup_condition().field().setValue(10000);
-        // msg_to_send.field_angularrate_condition().field().field_ang_rad_s1().setValue(3.0);
-        // msg_to_send.field_angularrate_condition().field().field_ang_rad_s2().setValue(3.0);
-        // msg_to_send.field_angularrate_condition().field().field_ang_rad_s3().setValue(3.0);
+        msg_to_send.field_timestartup_condition().field().setValue(10000);
+        msg_to_send.field_angularrate_condition().field().field_ang_rad_s1().setValue(3.0);
+        msg_to_send.field_angularrate_condition().field().field_ang_rad_s2().setValue(3.0);
+        msg_to_send.field_angularrate_condition().field().field_ang_rad_s3().setValue(3.0);
         
-        // msg_to_send.doRefresh(); // required to handle the updating of the state of the message to ensure that the 
-        // std::cout << msg_to_send.field_bg1_cond().doesExist() <<std::endl;
-        // std::cout << msg_to_send.field_timestartup_condition().doesExist() <<std::endl;
+        msg_to_send.doRefresh(); // required to handle the updating of the state of the message to ensure that the 
+        std::cout << msg_to_send.field_bg1_cond().doesExist() <<std::endl;
+        std::cout << msg_to_send.field_timestartup_condition().doesExist() <<std::endl;
         vn_driver.sendMessage(msg_to_send, send_lambda);
         std::cout << "message sent!" <<std::endl;
     } catch (std::exception& e) {
