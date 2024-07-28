@@ -6,8 +6,10 @@
     devshell.url = "github:numtide/devshell";
     nebs-packages.url = "github:RCMast3r/nebs_packages";
     easy_cmake.url = "github:RCMast3r/easy_cmake";
+    vn_driver_lib.url = "github:RCMast3r/vn_driver_lib";
   };
-  outputs = { self, nixpkgs, flake-parts, devshell, nebs-packages, easy_cmake, ... }@inputs:
+  outputs = { self, nixpkgs, flake-parts, devshell, nebs-packages, easy_cmake, vn_driver_lib, ... }@inputs:
+  
     flake-parts.lib.mkFlake { inherit inputs; }
       {
         systems = [
@@ -23,6 +25,7 @@
             vn_driver_lib_gen_src = pkgs.callPackage ./vn_driver_lib_gen.nix { };
             vn_driver_lib_gen = pkgs.callPackage ./vn_driver_lib.nix { inherit vn_driver_lib_gen_src; };
             vn_driver = pkgs.callPackage ./default.nix { inherit vn_driver_lib_gen; };
+            vn_configurator = pkgs.callPackage ./vn_configurator.nix { };
           in
           {
             _module.args.pkgs = import inputs.nixpkgs {
@@ -30,12 +33,14 @@
               overlays = [
                 nebs-packages.overlays.default
                 easy_cmake.overlays.default
+                vn_driver_lib.overlays.default
               ];
               config = { };
             };
             packages.vn_driver_lib_gen = vn_driver_lib_gen;
             packages.vn_driver_lib_gen_src = vn_driver_lib_gen_src;
             packages.vn_driver = vn_driver;
+            packages.vn_configurator= vn_configurator;
             packages.default = vn_driver;
             overlayAttrs = {
               inherit (config.packages) default vn_driver_lib_gen vn_driver;
@@ -45,9 +50,12 @@
             
             commands = [
               {
-                help = "print hello";
-                name = "hello";
-                command = "echo hello";
+                name = "configure";
+                command = "${vn_configurator}/bin/write.py";
+              }
+              {
+                name = "b";
+                command = "rm -rf build && mkdir build && cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && make -j";
               }
             ];
 
@@ -55,7 +63,7 @@
               pkgs.cmake
             ];
 
-            packagesFrom = [ vn_driver vn_driver_lib_gen ];
+            packagesFrom = [ vn_driver vn_driver_lib_gen vn_configurator ];
           };
             # legacyPackages =
             #   import nixpkgs {
