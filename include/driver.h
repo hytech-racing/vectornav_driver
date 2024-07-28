@@ -32,16 +32,16 @@ public:
     void handle(vn_msg &msg);
     void handle(InMessage &msg)
     {
-        std::cout <<"uh"<<std::endl;
+        std::cout <<"not used"<<std::endl;
         static_cast<void>(msg); // ignore
     }
-
     void recv(std::vector<std::uint8_t> data_in);
+
+    Frame handleRecv(const std::function<std::vector<uint8_t>()>& recv_function);
     void sendMessage(const OutMessage &msg, const std::function<void(const std::vector<uint8_t> &)> &send_function);
     Frame & get_frame() {return _msg_frame;}
 protected:
 private:
-
     Frame _msg_frame;
 };
 

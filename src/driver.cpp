@@ -31,6 +31,13 @@ void Driver::handle(vn_msg &msg)
     std::cout << "test groups gp out " << msg.field_groups().getBitValue_general_purpose() << std::endl;
 }
 
+Driver::Frame Driver::handleRecv(const std::function<std::vector<uint8_t>()> & recv_function)
+{
+    auto data_in = recv_function();
+    recv(data_in);
+    return _msg_frame;
+}
+
 void Driver::sendMessage(const OutMessage &msg, const std::function<void(const std::vector<uint8_t> &)> &send_function)
 {
     std::vector<uint8_t> out_buf;
