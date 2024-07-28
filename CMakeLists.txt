@@ -54,4 +54,4 @@ target_link_libraries(vn_listen_test PUBLIC vn_driver)
 set_target_properties(vn_driver_tester PROPERTIES CXX_STANDARD 17)
 target_compile_features(vn_driver_tester PRIVATE cxx_std_17)
 
-install(TARGETS vn_driver_cons_test vn_driver_tester DESTINATION bin)
+install(TARGETS vn_driver_cons_test vn_driver_tester vn_listen_test DESTINATION bin)

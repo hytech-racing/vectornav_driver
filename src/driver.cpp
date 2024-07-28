@@ -17,7 +17,7 @@ bool Driver::recv(std::vector<std::uint8_t>& data_in)
     {
         std::cout << "recvd "<< data_in.size() <<std::endl;
 
-        printBits(data_in);
+        // printBits(data_in);
         _vn_msg_recvd = false;
         auto consumed = comms::processAllWithDispatch(&data_in[0], data_in.size(), _msg_frame, *this);
 
