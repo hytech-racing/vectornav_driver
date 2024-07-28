@@ -41,8 +41,14 @@ add_executable(vn_driver_tester
     test/main_prod.cpp
 )
 
+add_executable(vn_listen_test
+    test/main_vn_test.cpp
+)
+
+
 target_link_libraries(vn_driver_cons_test PUBLIC vn_driver)
 target_link_libraries(vn_driver_tester PUBLIC vn_driver)
+target_link_libraries(vn_listen_test PUBLIC vn_driver)
 
 
 set_target_properties(vn_driver_tester PROPERTIES CXX_STANDARD 17)

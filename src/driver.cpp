@@ -11,31 +11,37 @@ void printBits(const std::vector<uint8_t>& bytes) {
     std::cout << std::endl;
 }
 
-void Driver::recv(std::vector<std::uint8_t> data_in)
+bool Driver::recv(std::vector<std::uint8_t>& data_in)
 {
     if (!data_in.empty())
     {
         std::cout << "recvd "<< data_in.size() <<std::endl;
 
         printBits(data_in);
-
+        _vn_msg_recvd = false;
         auto consumed = comms::processAllWithDispatch(&data_in[0], data_in.size(), _msg_frame, *this);
 
         std::cout <<"consumed " << consumed <<std::endl;
         data_in.erase(data_in.begin(), data_in.begin() + consumed);
+        return _vn_msg_recvd;
     }
+    return false;
 }
 
 void Driver::handle(vn_msg &msg)
 {
+    _vn_msg_recvd = true;
+    _current_vn_msg = msg;
     std::cout << "test groups gp out " << msg.field_groups().getBitValue_general_purpose() << std::endl;
 }
 
-Driver::Frame Driver::handleRecv(const std::function<std::vector<uint8_t>()> & recv_function)
+std::optional<Driver::Frame> Driver::handleRecv(const std::function<std::vector<uint8_t>()> & recv_function)
 {
     auto data_in = recv_function();
-    recv(data_in);
-    return _msg_frame;
+    if(recv(data_in)){
+        // return _current_vn_msg;
+    }
+    return std::nullopt;
 }
 
 void Driver::sendMessage(const OutMessage &msg, const std::function<void(const std::vector<uint8_t> &)> &send_function)
