@@ -1,3 +1,5 @@
 result
 result/
 build/
+.direnv/
+.env
